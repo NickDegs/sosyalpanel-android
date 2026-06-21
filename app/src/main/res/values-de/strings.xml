@@ -67,4 +67,13 @@
     <string name="goal_title">Ziel</string>
     <string name="goal_followers">Follower-Ziel</string>
     <string name="reached_milestones">Erreichte Meilensteine</string>
+    <string name="content_calendar">Content-Kalender</string>
+    <string name="plan_post">Beitrag planen</string>
+    <string name="plan_action">Planen</string>
+    <string name="no_plans">Noch keine Pläne</string>
+    <string name="no_plans_desc">Plane deine Beiträge, wir erinnern dich.</string>
+    <string name="upcoming">Anstehend</string>
+    <string name="past">Vergangen</string>
+    <string name="content_note">Was wirst du posten?</string>
+    <string name="reminder_notification">Erinnerungsbenachrichtigung</string>
 </resources>

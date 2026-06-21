@@ -46,7 +46,8 @@ data class AccountRelation(
     fun toModel() = AccountWithSnapshots(account, snapshots)
 }
 
-@Database(entities = [TrackedAccount::class, MetricSnapshot::class], version = 2, exportSchema = false)
+@Database(entities = [TrackedAccount::class, MetricSnapshot::class, ScheduledPost::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun accountDao(): AccountDao
+    abstract fun plannerDao(): PlannerDao
 }

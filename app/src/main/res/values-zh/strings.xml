@@ -67,4 +67,13 @@
     <string name="goal_title">目标</string>
     <string name="goal_followers">粉丝目标</string>
     <string name="reached_milestones">已达成里程碑</string>
+    <string name="content_calendar">内容日历</string>
+    <string name="plan_post">计划帖子</string>
+    <string name="plan_action">计划</string>
+    <string name="no_plans">还没有计划</string>
+    <string name="no_plans_desc">计划你的帖子，到时我们会提醒你。</string>
+    <string name="upcoming">即将到来</string>
+    <string name="past">过去</string>
+    <string name="content_note">你要发布什么？</string>
+    <string name="reminder_notification">提醒通知</string>
 </resources>

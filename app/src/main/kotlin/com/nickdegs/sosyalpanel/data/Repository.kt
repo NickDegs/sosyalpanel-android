@@ -13,9 +13,15 @@ class Repository private constructor(context: Context) {
     ).fallbackToDestructiveMigration().build()
 
     private val dao = db.accountDao()
+    private val planner = db.plannerDao()
 
     val accounts: Flow<List<AccountWithSnapshots>> =
         dao.observeAccountsWithSnapshots().map { list -> list.map { it.toModel() } }
+
+    val scheduledPosts: Flow<List<ScheduledPost>> = planner.observe()
+
+    suspend fun addScheduledPost(post: ScheduledPost): Long = planner.insert(post)
+    suspend fun deleteScheduledPost(post: ScheduledPost) = planner.delete(post)
 
     suspend fun addAccount(platform: Platform, username: String): Long {
         val clean = username.trim().removePrefix("@")

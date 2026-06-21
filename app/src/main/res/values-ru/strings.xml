@@ -67,4 +67,13 @@
     <string name="goal_title">Цель</string>
     <string name="goal_followers">Цель по подписчикам</string>
     <string name="reached_milestones">Достигнутые рубежи</string>
+    <string name="content_calendar">Контент-календарь</string>
+    <string name="plan_post">Запланировать пост</string>
+    <string name="plan_action">Запланировать</string>
+    <string name="no_plans">Пока нет планов</string>
+    <string name="no_plans_desc">Планируйте посты — напомним вовремя.</string>
+    <string name="upcoming">Предстоящие</string>
+    <string name="past">Прошедшие</string>
+    <string name="content_note">Что опубликуете?</string>
+    <string name="reminder_notification">Напоминание</string>
 </resources>

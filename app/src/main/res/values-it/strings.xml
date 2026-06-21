@@ -67,4 +67,13 @@
     <string name="goal_title">Obiettivo</string>
     <string name="goal_followers">Obiettivo follower</string>
     <string name="reached_milestones">Traguardi raggiunti</string>
+    <string name="content_calendar">Calendario contenuti</string>
+    <string name="plan_post">Pianifica post</string>
+    <string name="plan_action">Pianifica</string>
+    <string name="no_plans">Nessun piano</string>
+    <string name="no_plans_desc">Pianifica i post, ti ricorderemo noi.</string>
+    <string name="upcoming">In arrivo</string>
+    <string name="past">Passati</string>
+    <string name="content_note">Cosa pubblicherai?</string>
+    <string name="reminder_notification">Notifica promemoria</string>
 </resources>

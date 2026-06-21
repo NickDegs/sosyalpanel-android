@@ -67,4 +67,13 @@
     <string name="goal_title">Meta</string>
     <string name="goal_followers">Meta de seguidores</string>
     <string name="reached_milestones">Hitos alcanzados</string>
+    <string name="content_calendar">Calendario de contenido</string>
+    <string name="plan_post">Planificar publicación</string>
+    <string name="plan_action">Planificar</string>
+    <string name="no_plans">Aún no hay planes</string>
+    <string name="no_plans_desc">Planifica tus publicaciones y te avisamos a tiempo.</string>
+    <string name="upcoming">Próximos</string>
+    <string name="past">Pasados</string>
+    <string name="content_note">¿Qué publicarás?</string>
+    <string name="reminder_notification">Notificación de recordatorio</string>
 </resources>

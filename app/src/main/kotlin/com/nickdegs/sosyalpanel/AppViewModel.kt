@@ -21,6 +21,9 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     val accounts: StateFlow<List<AccountWithSnapshots>> =
         repo.accounts.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    val scheduledPosts: StateFlow<List<com.nickdegs.sosyalpanel.data.ScheduledPost>> =
+        repo.scheduledPosts.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
     init { billing.start() }
 
     fun canAddAccount(): Boolean =
@@ -52,6 +55,21 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun setGoal(accountId: Long, goal: Int?) = viewModelScope.launch { repo.setGoal(accountId, goal) }
+
+    fun addScheduledPost(note: String, platform: Platform, atMillis: Long, notify: Boolean) = viewModelScope.launch {
+        val post = com.nickdegs.sosyalpanel.data.ScheduledPost(
+            note = note, platformId = platform.id, scheduledAt = atMillis, notify = notify)
+        val id = repo.addScheduledPost(post)
+        if (notify) {
+            com.nickdegs.sosyalpanel.data.ReminderScheduler.schedule(
+                getApplication(), id, platform.displayName, note, atMillis)
+        }
+    }
+
+    fun deleteScheduledPost(post: com.nickdegs.sosyalpanel.data.ScheduledPost) = viewModelScope.launch {
+        com.nickdegs.sosyalpanel.data.ReminderScheduler.cancel(getApplication(), post.id)
+        repo.deleteScheduledPost(post)
+    }
 
     fun delete(account: TrackedAccount) = viewModelScope.launch { repo.delete(account) }
 

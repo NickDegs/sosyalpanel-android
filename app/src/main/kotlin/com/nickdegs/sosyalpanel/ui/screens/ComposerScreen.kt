@@ -5,8 +5,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,12 +33,24 @@ import com.nickdegs.sosyalpanel.ui.components.PlatformBadge
 @Composable
 fun ComposerScreen(vm: AppViewModel) {
     val ctx = LocalContext.current
+    var showPlanner by remember { mutableStateOf(false) }
+
+    if (showPlanner) {
+        PlannerScreen(vm, onBack = { showPlanner = false })
+        return
+    }
+
     Scaffold(
         containerColor = Color.Transparent,
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.tab_share), fontWeight = FontWeight.Bold) },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
+                actions = {
+                    IconButton(onClick = { showPlanner = true }) {
+                        Icon(Icons.Filled.CalendarMonth, stringResource(R.string.content_calendar))
+                    }
+                }
             )
         }
     ) { pad ->
