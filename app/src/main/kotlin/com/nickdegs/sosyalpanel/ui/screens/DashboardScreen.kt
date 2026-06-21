@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -46,7 +47,7 @@ fun DashboardScreen(vm: AppViewModel) {
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = androidx.compose.ui.graphics.Color.Transparent),
                 actions = {
                     IconButton(onClick = { vm.refreshSupported() }) {
-                        Icon(androidx.compose.material.icons.Icons.Filled.Refresh, stringResource(R.string.update))
+                        Icon(Icons.Filled.Refresh, stringResource(R.string.update))
                     }
                 }
             )
