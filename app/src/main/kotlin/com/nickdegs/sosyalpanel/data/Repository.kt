@@ -17,9 +17,9 @@ class Repository private constructor(context: Context) {
     val accounts: Flow<List<AccountWithSnapshots>> =
         dao.observeAccountsWithSnapshots().map { list -> list.map { it.toModel() } }
 
-    suspend fun addAccount(platform: Platform, username: String) {
+    suspend fun addAccount(platform: Platform, username: String): Long {
         val clean = username.trim().removePrefix("@")
-        dao.insertAccount(TrackedAccount(platformId = platform.id, username = clean))
+        return dao.insertAccount(TrackedAccount(platformId = platform.id, username = clean))
     }
 
     suspend fun addSnapshot(accountId: Long, followers: Int, following: Int?, posts: Int?) {

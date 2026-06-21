@@ -35,12 +35,20 @@ fun DashboardScreen(vm: AppViewModel) {
 
     val totalReach = accounts.sumOf { it.latest?.followers ?: 0 }
 
+    // Açılışta desteklenen platformların public verisini resmi API'den tazele.
+    LaunchedEffect(Unit) { vm.refreshSupported() }
+
     Scaffold(
         containerColor = androidx.compose.ui.graphics.Color.Transparent,
         topBar = {
             TopAppBar(
                 title = { Text("Social Panel", fontWeight = FontWeight.Bold) },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = androidx.compose.ui.graphics.Color.Transparent)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = androidx.compose.ui.graphics.Color.Transparent),
+                actions = {
+                    IconButton(onClick = { vm.refreshSupported() }) {
+                        Icon(androidx.compose.material.icons.Icons.Filled.Refresh, stringResource(R.string.update))
+                    }
+                }
             )
         },
         floatingActionButton = {
@@ -134,6 +142,15 @@ fun AddAccountDialog(onDismiss: () -> Unit, onAdd: (Platform, String) -> Unit) {
                     value = username, onValueChange = { username = it },
                     label = { Text(stringResource(R.string.username)) },
                     singleLine = true, modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(Modifier.height(8.dp))
+                val supported = com.nickdegs.sosyalpanel.data.PublicMetricsService.isSupported(platform)
+                Text(
+                    if (supported) stringResource(R.string.auto_fetch_on)
+                    else stringResource(R.string.auto_fetch_manual),
+                    fontSize = 12.sp,
+                    color = if (supported) com.nickdegs.sosyalpanel.ui.theme.Mint
+                            else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
             }
         },

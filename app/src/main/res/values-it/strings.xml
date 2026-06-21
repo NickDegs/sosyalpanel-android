@@ -61,4 +61,6 @@
     <string name="time_weekday_noon">Mezzogiorno nei feriali 12–14</string>
     <string name="time_evening">Sera 19–22</string>
     <string name="auto_backup_desc">I tuoi dati vengono salvati sul tuo account Google</string>
+    <string name="auto_fetch_on">Follower/seguiti/post recuperati automaticamente</string>
+    <string name="auto_fetch_manual">Su questa piattaforma inserisci i dati manualmente</string>
 </resources>

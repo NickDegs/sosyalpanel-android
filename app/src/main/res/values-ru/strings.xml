@@ -61,4 +61,6 @@
     <string name="time_weekday_noon">Будни в обед 12:00–14:00</string>
     <string name="time_evening">Вечером 19:00–22:00</string>
     <string name="auto_backup_desc">Данные резервируются в вашем аккаунте Google</string>
+    <string name="auto_fetch_on">Подписчики/подписки/посты загрузятся автоматически</string>
+    <string name="auto_fetch_manual">Для этой платформы данные вводятся вручную</string>
 </resources>

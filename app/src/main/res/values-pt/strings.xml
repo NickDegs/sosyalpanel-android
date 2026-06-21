@@ -61,4 +61,6 @@
     <string name="time_weekday_noon">Meio-dia nos dias úteis 12–14</string>
     <string name="time_evening">À noite 19–22</string>
     <string name="auto_backup_desc">Os teus dados são guardados na tua conta Google</string>
+    <string name="auto_fetch_on">Seguidores/a seguir/publicações obtidos automaticamente</string>
+    <string name="auto_fetch_manual">Nesta plataforma introduzes os dados manualmente</string>
 </resources>

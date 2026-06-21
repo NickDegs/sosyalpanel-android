@@ -61,4 +61,6 @@
     <string name="time_weekday_noon">İş günləri günorta 12:00–14:00</string>
     <string name="time_evening">Axşamlar 19:00–22:00</string>
     <string name="auto_backup_desc">Məlumatlarınız Google hesabınıza ehtiyatlanır</string>
+    <string name="auto_fetch_on">İzləyici/izlədiyim/paylaşım avtomatik çəkiləcək</string>
+    <string name="auto_fetch_manual">Bu platformada məlumatı əl ilə daxil edirsiniz</string>
 </resources>

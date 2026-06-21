@@ -61,4 +61,6 @@
     <string name="time_weekday_noon">Будні опівдні 12:00–14:00</string>
     <string name="time_evening">Увечері 19:00–22:00</string>
     <string name="auto_backup_desc">Дані резервуються у ваш обліковий запис Google</string>
+    <string name="auto_fetch_on">Підписники/підписки/дописи завантажаться автоматично</string>
+    <string name="auto_fetch_manual">Для цієї платформи дані вводяться вручну</string>
 </resources>

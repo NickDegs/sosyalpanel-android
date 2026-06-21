@@ -61,4 +61,6 @@
     <string name="time_weekday_noon">En semaine 12h–14h</string>
     <string name="time_evening">Le soir 19h–22h</string>
     <string name="auto_backup_desc">Vos données sont sauvegardées sur votre compte Google</string>
+    <string name="auto_fetch_on">Abonnés/abonnements/publications récupérés automatiquement</string>
+    <string name="auto_fetch_manual">Sur cette plateforme, saisissez les données manuellement</string>
 </resources>

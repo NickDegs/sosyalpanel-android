@@ -61,4 +61,6 @@
     <string name="time_weekday_noon">कार्यदिवस दोपहर 12–2</string>
     <string name="time_evening">शाम 7–10</string>
     <string name="auto_backup_desc">आपका डेटा आपके Google खाते में बैकअप होता है</string>
+    <string name="auto_fetch_on">फ़ॉलोअर्स/फ़ॉलोइंग/पोस्ट स्वतः प्राप्त होंगे</string>
+    <string name="auto_fetch_manual">इस प्लेटफ़ॉर्म के लिए डेटा मैन्युअल दर्ज करें</string>
 </resources>

@@ -61,4 +61,6 @@
     <string name="time_weekday_noon">Weekday noon 12–2 PM</string>
     <string name="time_evening">Evenings 7–10 PM</string>
     <string name="auto_backup_desc">Your data is automatically backed up to your Google account</string>
+    <string name="auto_fetch_on">Followers/following/posts will be fetched automatically</string>
+    <string name="auto_fetch_manual">You enter the data manually for this platform</string>
 </resources>

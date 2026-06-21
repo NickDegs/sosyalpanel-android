@@ -61,4 +61,6 @@
     <string name="time_weekday_noon">Mediodía entre semana 12–14</string>
     <string name="time_evening">Tardes 19–22</string>
     <string name="auto_backup_desc">Tus datos se respaldan en tu cuenta de Google</string>
+    <string name="auto_fetch_on">Seguidores/seguidos/publicaciones se obtendrán automáticamente</string>
+    <string name="auto_fetch_manual">En esta plataforma introduces los datos manualmente</string>
 </resources>

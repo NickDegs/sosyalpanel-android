@@ -61,4 +61,6 @@
     <string name="time_weekday_noon">工作日中午 12–14 点</string>
     <string name="time_evening">晚上 19–22 点</string>
     <string name="auto_backup_desc">你的数据会自动备份到 Google 账户</string>
+    <string name="auto_fetch_on">将自动获取粉丝/关注/帖子</string>
+    <string name="auto_fetch_manual">此平台需手动输入数据</string>
 </resources>

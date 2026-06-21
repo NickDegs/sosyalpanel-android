@@ -61,4 +61,6 @@
     <string name="time_weekday_noon">ظهر أيام الأسبوع 12–2</string>
     <string name="time_evening">مساءً 7–10</string>
     <string name="auto_backup_desc">يتم نسخ بياناتك احتياطيًا إلى حساب Google</string>
+    <string name="auto_fetch_on">سيتم جلب المتابعين/المتابَعين/المنشورات تلقائيًا</string>
+    <string name="auto_fetch_manual">تُدخل البيانات يدويًا لهذه المنصة</string>
 </resources>

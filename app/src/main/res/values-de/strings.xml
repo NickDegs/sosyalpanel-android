@@ -61,4 +61,6 @@
     <string name="time_weekday_noon">Werktags mittags 12–14 Uhr</string>
     <string name="time_evening">Abends 19–22 Uhr</string>
     <string name="auto_backup_desc">Deine Daten werden in deinem Google-Konto gesichert</string>
+    <string name="auto_fetch_on">Follower/Folge ich/Beiträge werden automatisch abgerufen</string>
+    <string name="auto_fetch_manual">Bei dieser Plattform gibst du die Daten manuell ein</string>
 </resources>
