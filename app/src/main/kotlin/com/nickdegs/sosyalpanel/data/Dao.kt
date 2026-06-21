@@ -30,6 +30,9 @@ interface AccountDao {
     @Query("DELETE FROM accounts")
     suspend fun deleteAllAccounts()
 
+    @Query("UPDATE accounts SET goalFollowers = :goal WHERE id = :id")
+    suspend fun setGoal(id: Long, goal: Int?)
+
     @Query("SELECT COUNT(*) FROM accounts")
     suspend fun accountCount(): Int
 }
@@ -43,7 +46,7 @@ data class AccountRelation(
     fun toModel() = AccountWithSnapshots(account, snapshots)
 }
 
-@Database(entities = [TrackedAccount::class, MetricSnapshot::class], version = 1, exportSchema = false)
+@Database(entities = [TrackedAccount::class, MetricSnapshot::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun accountDao(): AccountDao
 }

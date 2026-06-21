@@ -51,6 +51,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         repo.addSnapshot(accountId, followers, following, posts)
     }
 
+    fun setGoal(accountId: Long, goal: Int?) = viewModelScope.launch { repo.setGoal(accountId, goal) }
+
     fun delete(account: TrackedAccount) = viewModelScope.launch { repo.delete(account) }
 
     fun deleteAll() = viewModelScope.launch { repo.deleteAll() }

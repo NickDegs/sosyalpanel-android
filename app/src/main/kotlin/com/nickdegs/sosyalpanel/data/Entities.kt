@@ -12,7 +12,8 @@ data class TrackedAccount(
     val platformId: String,
     val username: String,
     val sortOrder: Int = 0,
-    val addedAt: Long = System.currentTimeMillis()
+    val addedAt: Long = System.currentTimeMillis(),
+    val goalFollowers: Int? = null      // kullanıcı hedefi (opsiyonel)
 ) {
     val platform: Platform get() = Platform.from(platformId)
 }
@@ -60,5 +61,39 @@ data class AccountWithSnapshots(
         if (s.size < 2) return 0
         val days = ((s.last().capturedAt - s.first().capturedAt) / 86_400_000.0).coerceAtLeast(1.0)
         return ((s.last().followers - s.first().followers) / days).toInt()
+    }
+
+    // --- Hedef & Milestone (içerik üretici) ---
+    val currentFollowers: Int get() = latest?.followers ?: 0
+    val reachedMilestones: List<Int> get() = Milestone.thresholds.filter { currentFollowers >= it }
+    val nextMilestone: Int? get() = Milestone.thresholds.firstOrNull { it > currentFollowers }
+    val effectiveGoal: Int? get() = account.goalFollowers ?: nextMilestone
+    val goalProgress: Float get() {
+        val g = effectiveGoal ?: return 0f
+        if (g <= 0) return 0f
+        return (currentFollowers.toFloat() / g).coerceIn(0f, 1f)
+    }
+    val goalEtaText: String? get() {
+        val g = effectiveGoal ?: return null
+        if (currentFollowers >= g) return null
+        val growth = dailyAverage()
+        if (growth <= 0) return null
+        val days = Math.ceil((g - currentFollowers).toDouble() / growth).toInt()
+        return when {
+            days <= 0 -> null
+            days < 30 -> "~$days gün"
+            days < 365 -> "~${days / 30} ay"
+            else -> "~${days / 365} yıl"
+        }
+    }
+}
+
+object Milestone {
+    val thresholds = listOf(1_000, 5_000, 10_000, 25_000, 50_000, 100_000,
+                            250_000, 500_000, 1_000_000, 5_000_000, 10_000_000)
+    fun label(n: Int): String = when {
+        n >= 1_000_000 -> "${n / 1_000_000}M"
+        n >= 1_000 -> "${n / 1_000}K"
+        else -> "$n"
     }
 }

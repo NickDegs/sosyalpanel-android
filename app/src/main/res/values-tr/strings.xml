@@ -63,4 +63,8 @@
     <string name="auto_backup_desc">Verilerin Google hesabına otomatik yedeklenir</string>
     <string name="auto_fetch_on">Takipçi/takip/gönderi otomatik çekilecek</string>
     <string name="auto_fetch_manual">Bu platformda veriyi manuel girersin</string>
+    <string name="save">Kaydet</string>
+    <string name="goal_title">Hedef</string>
+    <string name="goal_followers">Takipçi hedefi</string>
+    <string name="reached_milestones">Ulaşılan kilometre taşları</string>
 </resources>

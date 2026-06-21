@@ -26,6 +26,8 @@ class Repository private constructor(context: Context) {
         dao.insertSnapshot(MetricSnapshot(accountId = accountId, followers = followers, following = following, posts = posts))
     }
 
+    suspend fun setGoal(accountId: Long, goal: Int?) = dao.setGoal(accountId, goal)
+
     suspend fun delete(account: TrackedAccount) = dao.deleteAccount(account)
     suspend fun deleteAll() = dao.deleteAllAccounts()
     suspend fun count() = dao.accountCount()

@@ -63,4 +63,8 @@
     <string name="auto_backup_desc">你的数据会自动备份到 Google 账户</string>
     <string name="auto_fetch_on">将自动获取粉丝/关注/帖子</string>
     <string name="auto_fetch_manual">此平台需手动输入数据</string>
+    <string name="save">保存</string>
+    <string name="goal_title">目标</string>
+    <string name="goal_followers">粉丝目标</string>
+    <string name="reached_milestones">已达成里程碑</string>
 </resources>

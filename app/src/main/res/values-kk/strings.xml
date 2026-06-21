@@ -63,4 +63,8 @@
     <string name="auto_backup_desc">Деректер Google аккаунтыңызға сақталады</string>
     <string name="auto_fetch_on">Жазылушы/жазылған/жазба автоматты алынады</string>
     <string name="auto_fetch_manual">Бұл платформада деректі қолмен енгізесіз</string>
+    <string name="save">Сақтау</string>
+    <string name="goal_title">Мақсат</string>
+    <string name="goal_followers">Жазылушы мақсаты</string>
+    <string name="reached_milestones">Жеткен межелер</string>
 </resources>

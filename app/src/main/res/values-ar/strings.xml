@@ -63,4 +63,8 @@
     <string name="auto_backup_desc">يتم نسخ بياناتك احتياطيًا إلى حساب Google</string>
     <string name="auto_fetch_on">سيتم جلب المتابعين/المتابَعين/المنشورات تلقائيًا</string>
     <string name="auto_fetch_manual">تُدخل البيانات يدويًا لهذه المنصة</string>
+    <string name="save">حفظ</string>
+    <string name="goal_title">الهدف</string>
+    <string name="goal_followers">هدف المتابعين</string>
+    <string name="reached_milestones">الإنجازات المحققة</string>
 </resources>
