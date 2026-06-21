@@ -87,6 +87,10 @@ dependencies {
     // DataStore (ayarlar: dil, ilk-açılış)
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
+    // Glance — ana ekran widget'ı (Compose tabanlı)
+    implementation("androidx.glance:glance-appwidget:1.1.1")
+    implementation("androidx.glance:glance-material3:1.1.1")
+
     // Google Play Billing (Pro abonelik — StoreKit karşılığı)
     implementation("com.android.billingclient:billing-ktx:7.1.1")
 

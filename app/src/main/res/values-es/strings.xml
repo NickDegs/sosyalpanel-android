@@ -76,4 +76,5 @@
     <string name="past">Pasados</string>
     <string name="content_note">¿Qué publicarás?</string>
     <string name="reminder_notification">Notificación de recordatorio</string>
+    <string name="widget_desc">Alcance total y crecimiento de un vistazo</string>
 </resources>

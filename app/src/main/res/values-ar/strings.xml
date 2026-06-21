@@ -76,4 +76,5 @@
     <string name="past">السابقة</string>
     <string name="content_note">ماذا ستنشر؟</string>
     <string name="reminder_notification">إشعار تذكير</string>
+    <string name="widget_desc">الوصول الإجمالي والنمو بنظرة واحدة</string>
 </resources>

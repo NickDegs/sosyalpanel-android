@@ -76,4 +76,5 @@
     <string name="past">Geçmiş</string>
     <string name="content_note">Ne paylaşacaksın?</string>
     <string name="reminder_notification">Hatırlatma bildirimi</string>
+    <string name="widget_desc">Toplam erişim ve büyüme bir bakışta</string>
 </resources>

@@ -76,4 +76,5 @@
     <string name="past">Vergangen</string>
     <string name="content_note">Was wirst du posten?</string>
     <string name="reminder_notification">Erinnerungsbenachrichtigung</string>
+    <string name="widget_desc">Gesamtreichweite und Wachstum auf einen Blick</string>
 </resources>

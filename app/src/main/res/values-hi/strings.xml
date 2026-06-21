@@ -76,4 +76,5 @@
     <string name="past">बीते हुए</string>
     <string name="content_note">क्या पोस्ट करेंगे?</string>
     <string name="reminder_notification">रिमाइंडर सूचना</string>
+    <string name="widget_desc">कुल पहुंच और वृद्धि एक नज़र में</string>
 </resources>

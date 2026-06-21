@@ -76,4 +76,5 @@
     <string name="past">Прошедшие</string>
     <string name="content_note">Что опубликуете?</string>
     <string name="reminder_notification">Напоминание</string>
+    <string name="widget_desc">Общий охват и рост одним взглядом</string>
 </resources>
