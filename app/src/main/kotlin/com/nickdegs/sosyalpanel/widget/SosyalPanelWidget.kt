@@ -3,6 +3,7 @@ package com.nickdegs.sosyalpanel.widget
 import android.content.Context
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.appwidget.GlanceAppWidget
@@ -25,7 +26,7 @@ import java.text.NumberFormat
 
 // Ana ekran widget'ı — toplam erişim + hesap sayısı (Compose/Glance).
 class SosyalPanelWidget : GlanceAppWidget() {
-    override suspend fun provideGlance(context: Context, id: androidx.glance.appwidget.GlanceId) {
+    override suspend fun provideGlance(context: Context, id: GlanceId) {
         val accounts = runCatching { Repository.get(context).accounts.first() }.getOrDefault(emptyList())
         val total = accounts.sumOf { it.latest?.followers ?: 0 }
         val count = accounts.size
