@@ -23,7 +23,7 @@ private enum class Tab(val labelRes: Int, val sel: ImageVector, val unsel: Image
     DASHBOARD(R.string.tab_home, Icons.Filled.GridView, Icons.Outlined.GridView),
     ANALYTICS(R.string.tab_analytics, Icons.Filled.BarChart, Icons.Outlined.BarChart),
     COMPOSE(R.string.tab_share, Icons.Filled.Edit, Icons.Outlined.Edit),
-    TIPS(R.string.tab_tips, Icons.Filled.CheckCircle, Icons.Outlined.CheckCircle),
+    TIPS(R.string.tab_ai, Icons.Filled.AutoAwesome, Icons.Outlined.AutoAwesome),
     SETTINGS(R.string.tab_settings, Icons.Filled.Settings, Icons.Outlined.Settings),
 }
 
@@ -58,7 +58,7 @@ fun RootScreen(vm: AppViewModel = viewModel()) {
                     Tab.DASHBOARD -> DashboardScreen(vm)
                     Tab.ANALYTICS -> AnalyticsScreen(vm)
                     Tab.COMPOSE -> ComposerScreen(vm)
-                    Tab.TIPS -> TipsScreen()
+                    Tab.TIPS -> AIChatScreen(vm)
                     Tab.SETTINGS -> SettingsScreen(vm)
                 }
             }

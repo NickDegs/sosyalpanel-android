@@ -77,4 +77,5 @@
     <string name="content_note">Cosa pubblicherai?</string>
     <string name="reminder_notification">Notifica promemoria</string>
     <string name="widget_desc">Copertura totale e crescita a colpo d\'occhio</string>
+    <string name="tab_ai">IA</string>
 </resources>

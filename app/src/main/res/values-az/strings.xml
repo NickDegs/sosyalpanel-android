@@ -77,4 +77,5 @@
     <string name="content_note">Nə paylaşacaqsan?</string>
     <string name="reminder_notification">Xatırlatma bildirişi</string>
     <string name="widget_desc">Ümumi əhatə və artım bir baxışda</string>
+    <string name="tab_ai">AI</string>
 </resources>

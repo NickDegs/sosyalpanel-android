@@ -77,4 +77,5 @@
     <string name="content_note">Ne paylaşacaksın?</string>
     <string name="reminder_notification">Hatırlatma bildirimi</string>
     <string name="widget_desc">Toplam erişim ve büyüme bir bakışta</string>
+    <string name="tab_ai">AI</string>
 </resources>

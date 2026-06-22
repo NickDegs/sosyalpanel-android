@@ -77,4 +77,5 @@
     <string name="content_note">Не жариялайсың?</string>
     <string name="reminder_notification">Еске салу хабарландыруы</string>
     <string name="widget_desc">Жалпы қамту мен өсу бір қарағанда</string>
+    <string name="tab_ai">AI</string>
 </resources>

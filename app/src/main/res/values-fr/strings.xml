@@ -77,4 +77,5 @@
     <string name="content_note">Que publierez-vous ?</string>
     <string name="reminder_notification">Notification de rappel</string>
     <string name="widget_desc">Portée totale et croissance en un coup d\'œil</string>
+    <string name="tab_ai">IA</string>
 </resources>

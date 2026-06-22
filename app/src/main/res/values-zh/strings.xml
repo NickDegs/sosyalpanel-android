@@ -77,4 +77,5 @@
     <string name="content_note">你要发布什么？</string>
     <string name="reminder_notification">提醒通知</string>
     <string name="widget_desc">一眼掌握总触达和增长</string>
+    <string name="tab_ai">AI</string>
 </resources>
