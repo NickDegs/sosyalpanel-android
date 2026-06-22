@@ -78,4 +78,7 @@
     <string name="reminder_notification">रिमाइंडर सूचना</string>
     <string name="widget_desc">कुल पहुंच और वृद्धि एक नज़र में</string>
     <string name="tab_ai">AI</string>
+    <string name="feat_ai_chat">असीमित AI चैट</string>
+    <string name="feat_ai_chat_desc">कोई दैनिक सीमा नहीं + स्मार्ट मॉडल</string>
+    <string name="pro_studio_title">Pro के साथ AI स्टूडियो</string>
 </resources>

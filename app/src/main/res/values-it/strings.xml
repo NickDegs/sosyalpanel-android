@@ -78,4 +78,7 @@
     <string name="reminder_notification">Notifica promemoria</string>
     <string name="widget_desc">Copertura totale e crescita a colpo d\'occhio</string>
     <string name="tab_ai">IA</string>
+    <string name="feat_ai_chat">Chat IA illimitata</string>
+    <string name="feat_ai_chat_desc">Nessun limite + modello più intelligente</string>
+    <string name="pro_studio_title">AI Studio con Pro</string>
 </resources>

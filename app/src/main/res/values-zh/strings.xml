@@ -78,4 +78,7 @@
     <string name="reminder_notification">提醒通知</string>
     <string name="widget_desc">一眼掌握总触达和增长</string>
     <string name="tab_ai">AI</string>
+    <string name="feat_ai_chat">无限 AI 对话</string>
+    <string name="feat_ai_chat_desc">无每日限制+更智能模型</string>
+    <string name="pro_studio_title">Pro 解锁 AI 工作室</string>
 </resources>

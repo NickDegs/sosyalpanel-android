@@ -78,4 +78,7 @@
     <string name="reminder_notification">Напоминание</string>
     <string name="widget_desc">Общий охват и рост одним взглядом</string>
     <string name="tab_ai">ИИ</string>
+    <string name="feat_ai_chat">Безлимитный AI-чат</string>
+    <string name="feat_ai_chat_desc">Без лимита + умнее модель</string>
+    <string name="pro_studio_title">AI-студия с Pro</string>
 </resources>

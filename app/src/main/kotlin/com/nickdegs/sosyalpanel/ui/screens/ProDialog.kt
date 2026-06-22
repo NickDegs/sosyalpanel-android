@@ -1,7 +1,11 @@
 package com.nickdegs.sosyalpanel.ui.screens
 
 import android.app.Activity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
@@ -10,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -17,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nickdegs.sosyalpanel.AppViewModel
 import com.nickdegs.sosyalpanel.R
+import com.nickdegs.sosyalpanel.ui.theme.Brand
 import com.nickdegs.sosyalpanel.ui.theme.Mint
 
 // iOS ProView karşılığı — abonelik paywall'ı (Play Billing).
@@ -29,10 +35,21 @@ fun ProDialog(vm: AppViewModel, onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.go_pro), fontWeight = FontWeight.Bold) },
         text = {
-            Column {
+            Column(Modifier.verticalScroll(rememberScrollState())) {
+                feature(stringResource(R.string.feat_ai_chat), stringResource(R.string.feat_ai_chat_desc))
                 feature(stringResource(R.string.feat_unlimited), stringResource(R.string.feat_unlimited_desc))
                 feature(stringResource(R.string.feat_advanced), stringResource(R.string.feat_advanced_desc))
-                feature(stringResource(R.string.feat_priority), stringResource(R.string.feat_priority_desc))
+                Spacer(Modifier.height(10.dp))
+                Text(stringResource(R.string.pro_studio_title), fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                Spacer(Modifier.height(6.dp))
+                val tools = listOf("Yazı","Görsel","Video","Logo","Ürün Foto","Çeviri","SEO","Seslendirme")
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    tools.take(4).forEach { ToolChip(it, Modifier.weight(1f)) }
+                }
+                Spacer(Modifier.height(4.dp))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    tools.drop(4).forEach { ToolChip(it, Modifier.weight(1f)) }
+                }
                 Spacer(Modifier.height(12.dp))
                 if (products.isEmpty()) {
                     Text(stringResource(R.string.subs_unavailable), fontSize = 12.sp,
@@ -57,6 +74,19 @@ fun ProDialog(vm: AppViewModel, onDismiss: () -> Unit) {
         },
         dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.close)) } }
     )
+}
+
+@Composable
+private fun ToolChip(name: String, modifier: Modifier = Modifier) {
+    Box(
+        modifier
+            .clip(RoundedCornerShape(10.dp))
+            .background(Brand.copy(alpha = 0.12f))
+            .padding(vertical = 8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(name, fontSize = 10.sp, fontWeight = FontWeight.Medium, color = Brand, maxLines = 1)
+    }
 }
 
 @Composable

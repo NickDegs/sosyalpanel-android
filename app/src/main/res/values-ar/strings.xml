@@ -78,4 +78,7 @@
     <string name="reminder_notification">إشعار تذكير</string>
     <string name="widget_desc">الوصول الإجمالي والنمو بنظرة واحدة</string>
     <string name="tab_ai">ذكاء</string>
+    <string name="feat_ai_chat">دردشة ذكاء غير محدودة</string>
+    <string name="feat_ai_chat_desc">بلا حد يومي + نموذج أذكى</string>
+    <string name="pro_studio_title">استوديو الذكاء مع Pro</string>
 </resources>

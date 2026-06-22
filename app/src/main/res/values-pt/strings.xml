@@ -78,4 +78,7 @@
     <string name="reminder_notification">Notificação de lembrete</string>
     <string name="widget_desc">Alcance total e crescimento num relance</string>
     <string name="tab_ai">IA</string>
+    <string name="feat_ai_chat">Chat IA ilimitado</string>
+    <string name="feat_ai_chat_desc">Sem limite diário + modelo mais inteligente</string>
+    <string name="pro_studio_title">AI Studio com Pro</string>
 </resources>

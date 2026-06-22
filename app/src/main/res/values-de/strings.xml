@@ -78,4 +78,7 @@
     <string name="reminder_notification">Erinnerungsbenachrichtigung</string>
     <string name="widget_desc">Gesamtreichweite und Wachstum auf einen Blick</string>
     <string name="tab_ai">KI</string>
+    <string name="feat_ai_chat">Unbegrenzter KI-Chat</string>
+    <string name="feat_ai_chat_desc">Kein Tageslimit + smarteres Modell</string>
+    <string name="pro_studio_title">AI Studio mit Pro</string>
 </resources>

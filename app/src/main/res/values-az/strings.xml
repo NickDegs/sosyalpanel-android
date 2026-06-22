@@ -78,4 +78,7 @@
     <string name="reminder_notification">Xatırlatma bildirişi</string>
     <string name="widget_desc">Ümumi əhatə və artım bir baxışda</string>
     <string name="tab_ai">AI</string>
+    <string name="feat_ai_chat">Limitsiz AI söhbət</string>
+    <string name="feat_ai_chat_desc">Gündəlik limit yox + ağıllı model</string>
+    <string name="pro_studio_title">Pro ilə AI Studiya</string>
 </resources>
