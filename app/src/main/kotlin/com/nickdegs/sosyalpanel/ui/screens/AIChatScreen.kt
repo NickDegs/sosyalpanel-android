@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.AutoFixHigh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -48,7 +49,10 @@ fun AIChatScreen(vm: AppViewModel = viewModel()) {
     var smartMode by remember { mutableStateOf(false) }
     var freeLeft by remember { mutableStateOf<Int?>(null) }
     var showPro by remember { mutableStateOf(false) }
+    var showStudio by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
+
+    if (showStudio) { StudioScreen(vm, onBack = { showStudio = false }); return }
 
     LaunchedEffect(Unit) { freeLeft = AIService.freeRemaining() }
     LaunchedEffect(messages.size) { if (messages.isNotEmpty()) listState.animateScrollToItem(messages.size) }
@@ -80,6 +84,11 @@ fun AIChatScreen(vm: AppViewModel = viewModel()) {
             TopAppBar(
                 title = { Text("AI Asistan", fontWeight = FontWeight.Bold) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
+                navigationIcon = {
+                    IconButton(onClick = { showStudio = true }) {
+                        Icon(Icons.Filled.AutoFixHigh, "AI Stüdyo", tint = Brand)
+                    }
+                },
                 actions = {
                     if (isPro) {
                         Icon(Icons.Filled.AutoAwesome, "Pro", tint = Gold, modifier = Modifier.padding(end = 12.dp))

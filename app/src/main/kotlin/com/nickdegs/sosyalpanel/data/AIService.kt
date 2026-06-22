@@ -43,6 +43,39 @@ object AIService {
         postJson(path, body)
     }
 
+    // Premium araç çıktısı
+    sealed class ToolResult {
+        data class TextOut(val text: String) : ToolResult()
+        data class ImageOut(val dataUri: String) : ToolResult()
+        data class VideoOut(val url: String) : ToolResult()
+        object Quota : ToolResult()
+        object Error : ToolResult()
+    }
+
+    suspend fun runTool(endpoint: String, params: Map<String, Any>): ToolResult = withContext(Dispatchers.IO) {
+        val body = JSONObject()
+        params.forEach { (k, v) -> body.put(k, v) }
+        val conn = open("$BASE/api/$endpoint")
+        try {
+            conn.requestMethod = "POST"; conn.doOutput = true
+            conn.setRequestProperty("Content-Type", "application/json")
+            conn.outputStream.use { it.write(body.toString().toByteArray()) }
+            val code = conn.responseCode
+            storeCookies(conn)
+            val stream = if (code in 200..299) conn.inputStream else conn.errorStream
+            val text = stream?.bufferedReader()?.use { it.readText() } ?: ""
+            val json = runCatching { JSONObject(text) }.getOrNull()
+            when {
+                code == 402 || json?.optString("err") == "kota_doldu" -> ToolResult.Quota
+                json?.has("image") == true -> ToolResult.ImageOut(json.getString("image"))
+                json?.has("video") == true -> ToolResult.VideoOut(json.getString("video"))
+                json?.optBoolean("ok") == true && json.optString("metin").isNotBlank() ->
+                    ToolResult.TextOut(json.getString("metin"))
+                else -> ToolResult.Error
+            }
+        } catch (_: Exception) { ToolResult.Error } finally { conn.disconnect() }
+    }
+
     // role: "user" | "assistant"
     fun analysisPrompt(platform: String, username: String, metrics: PublicMetrics?): String {
         val sb = StringBuilder("Sen üst düzey bir sosyal medya büyüme stratejistisin. Kısa, uygulanabilir, profesyonel tavsiye ver. ")
