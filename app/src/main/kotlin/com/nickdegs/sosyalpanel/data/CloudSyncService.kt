@@ -79,9 +79,12 @@ object CloudSyncService {
         var count = 0
         for (i in 0 until accs.length()) {
             val a = accs.optJSONObject(i) ?: continue
-            val pr = a.optString("platform").ifBlank { continue }
-            val un = a.optString("username").ifBlank { continue }
-            val accID = a.optString("id").ifBlank { continue }
+            val pr = a.optString("platform")
+            if (pr.isBlank()) continue
+            val un = a.optString("username")
+            if (un.isBlank()) continue
+            val accID = a.optString("id")
+            if (accID.isBlank()) continue
             val account = TrackedAccount(
                 platformId = normalizePlatform(pr),
                 username = un,
