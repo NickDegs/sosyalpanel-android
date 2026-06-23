@@ -5,6 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.nickdegs.sosyalpanel.billing.BillingManager
 import com.nickdegs.sosyalpanel.data.AccountWithSnapshots
+import com.nickdegs.sosyalpanel.data.AuthService
+import com.nickdegs.sosyalpanel.data.CloudSyncService
 import com.nickdegs.sosyalpanel.data.Platform
 import com.nickdegs.sosyalpanel.data.PublicMetricsService
 import com.nickdegs.sosyalpanel.data.Repository
@@ -24,7 +26,30 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     val scheduledPosts: StateFlow<List<com.nickdegs.sosyalpanel.data.ScheduledPost>> =
         repo.scheduledPosts.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    init { billing.start() }
+    // SMS giriş durumu (giriş kapısı + Ayarlar gözler).
+    val isLoggedIn: StateFlow<Boolean> = AuthService.isLoggedIn
+
+    init {
+        billing.start()
+        AuthService.init(app)
+        // Giriş yapılmışsa açılışta buluttan geri yükle (yerel boşsa).
+        viewModelScope.launch {
+            if (AuthService.isLoggedIn.value) runCatching { CloudSyncService.restore(repo) }
+        }
+        // Hesap değişimlerini buluta gönder (numaraya bağlı senkron).
+        viewModelScope.launch {
+            accounts.collect { list ->
+                if (AuthService.isLoggedIn.value && list.isNotEmpty()) {
+                    runCatching { CloudSyncService.syncUp(list) }
+                }
+            }
+        }
+    }
+
+    // Buluttan verileri geri getir (Ayarlar "Verileri Geri Yükle" + giriş sonrası).
+    suspend fun restoreData(): Int = runCatching { CloudSyncService.restore(repo) }.getOrDefault(0)
+
+    fun signOut() = AuthService.signOut()
 
     fun canAddAccount(): Boolean =
         billing.isPro.value || accounts.value.size < Repository.FREE_ACCOUNT_LIMIT
@@ -73,5 +98,9 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     fun delete(account: TrackedAccount) = viewModelScope.launch { repo.delete(account) }
 
-    fun deleteAll() = viewModelScope.launch { repo.deleteAll() }
+    fun deleteAll() = viewModelScope.launch {
+        repo.deleteAll()
+        // Bulutu da temizle (geri yüklemede silinen veri dönmesin).
+        if (AuthService.isLoggedIn.value) runCatching { CloudSyncService.syncUp(emptyList()) }
+    }
 }

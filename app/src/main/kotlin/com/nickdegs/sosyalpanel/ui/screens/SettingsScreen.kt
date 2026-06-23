@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -18,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 import com.nickdegs.sosyalpanel.AppViewModel
 import com.nickdegs.sosyalpanel.R
 import com.nickdegs.sosyalpanel.data.AppOpener
@@ -32,11 +34,14 @@ import com.nickdegs.sosyalpanel.ui.theme.Gold
 @Composable
 fun SettingsScreen(vm: AppViewModel) {
     val ctx = LocalContext.current
+    val scope = rememberCoroutineScope()
     val accounts by vm.accounts.collectAsState()
     val isPro by vm.billing.isPro.collectAsState()
     var showLang by remember { mutableStateOf(false) }
     var showClear by remember { mutableStateOf(false) }
     var showPro by remember { mutableStateOf(false) }
+    var restoring by remember { mutableStateOf(false) }
+    var restoreMsg by remember { mutableStateOf<String?>(null) }
 
     Scaffold(
         containerColor = Color.Transparent,
@@ -95,6 +100,53 @@ fun SettingsScreen(vm: AppViewModel) {
                             Icon(Icons.Filled.OpenInNew, null, modifier = Modifier.size(16.dp),
                                 tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
                         }
+                    }
+                }
+            }
+
+            // Account (SMS) + cloud restore
+            item {
+                GlassCard {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Filled.AccountCircle, null, tint = MaterialTheme.colorScheme.primary)
+                        Spacer(Modifier.width(12.dp))
+                        Column(Modifier.weight(1f)) {
+                            Text("Hesap", fontWeight = FontWeight.Medium, fontSize = 14.sp)
+                            Text(formattedPhone(com.nickdegs.sosyalpanel.data.AuthService.phone),
+                                fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+                        }
+                    }
+                    Spacer(Modifier.height(8.dp))
+                    // Verileri Geri Yükle (restore purchases/data)
+                    Row(
+                        Modifier.fillMaxWidth().clickable(enabled = !restoring) {
+                            restoring = true; restoreMsg = null
+                            scope.launch {
+                                val n = vm.restoreData()
+                                restoring = false
+                                restoreMsg = if (n > 0) "$n hesap geri yüklendi."
+                                else "Geri yüklenecek bulut verisi yok ya da veriler zaten güncel."
+                            }
+                        }.padding(vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (restoring) CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
+                        else Icon(Icons.Filled.CloudDownload, null, modifier = Modifier.size(20.dp),
+                            tint = com.nickdegs.sosyalpanel.ui.theme.BrandBlue)
+                        Spacer(Modifier.width(12.dp))
+                        Text("Verileri Geri Yükle", Modifier.weight(1f), fontSize = 14.sp)
+                    }
+                    restoreMsg?.let {
+                        Text(it, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                            modifier = Modifier.padding(start = 32.dp, bottom = 4.dp))
+                    }
+                    HorizontalDivider(Modifier.padding(vertical = 4.dp))
+                    TextButton(onClick = {
+                        vm.signOut()
+                    }) {
+                        Icon(Icons.AutoMirrored.Filled.Logout, null, tint = Danger)
+                        Spacer(Modifier.width(6.dp))
+                        Text("Çıkış Yap", color = Danger)
                     }
                 }
             }
@@ -193,3 +245,11 @@ private fun openUrl(ctx: android.content.Context, url: String) {
 
 private fun appVersion(ctx: android.content.Context): String =
     runCatching { ctx.packageManager.getPackageInfo(ctx.packageName, 0).versionName ?: "1.1.0" }.getOrDefault("1.1.0")
+
+// "905551234567" → "+90 555 *** ** 67" (maskelenmiş telefon).
+private fun formattedPhone(raw: String?): String {
+    val d = raw?.filter { it.isDigit() } ?: return "—"
+    if (d.length < 6) return "+$d"
+    val head = d.take(d.length - 4)
+    return "+$head ** ${d.takeLast(2)}"
+}

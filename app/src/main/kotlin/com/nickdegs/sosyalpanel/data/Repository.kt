@@ -34,6 +34,12 @@ class Repository private constructor(context: Context) {
 
     suspend fun setGoal(accountId: Long, goal: Int?) = dao.setGoal(accountId, goal)
 
+    // --- Bulut geri yükleme (CloudSyncService) ---
+    // Tam hesap nesnesini (hedef + sıra) ekler, üretilen id'yi döndürür.
+    suspend fun insertFullAccount(account: TrackedAccount): Long = dao.insertAccount(account)
+    // capturedAt dahil hazır snapshot ekler (geri yüklemede zaman damgası korunur).
+    suspend fun insertSnapshotRaw(snapshot: MetricSnapshot) = dao.insertSnapshot(snapshot)
+
     suspend fun delete(account: TrackedAccount) = dao.deleteAccount(account)
     suspend fun deleteAll() = dao.deleteAllAccounts()
     suspend fun count() = dao.accountCount()

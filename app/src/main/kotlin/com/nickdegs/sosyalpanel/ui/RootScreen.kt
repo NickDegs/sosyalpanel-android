@@ -29,6 +29,12 @@ private enum class Tab(val labelRes: Int, val sel: ImageVector, val unsel: Image
 
 @Composable
 fun RootScreen(vm: AppViewModel = viewModel()) {
+    val loggedIn by vm.isLoggedIn.collectAsState()
+    if (!loggedIn) {
+        PhoneLoginScreen(onLoggedIn = { vm.restoreData() })
+        return
+    }
+
     var tab by rememberSaveable { mutableStateOf(Tab.DASHBOARD) }
 
     Box(Modifier.fillMaxSize()) {
