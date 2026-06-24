@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Flag
+import androidx.compose.material.icons.filled.PeopleAlt
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material3.*
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.nickdegs.sosyalpanel.AppViewModel
 import com.nickdegs.sosyalpanel.R
 import com.nickdegs.sosyalpanel.data.AccountWithSnapshots
+import com.nickdegs.sosyalpanel.data.FollowerAnalysisService
 import com.nickdegs.sosyalpanel.data.Milestone
 import com.nickdegs.sosyalpanel.data.Platform
 import com.nickdegs.sosyalpanel.ui.components.GlassCard
@@ -40,6 +42,7 @@ fun DashboardScreen(vm: AppViewModel) {
     var showAdd by remember { mutableStateOf(false) }
     var updateFor by remember { mutableStateOf<AccountWithSnapshots?>(null) }
     var goalFor by remember { mutableStateOf<AccountWithSnapshots?>(null) }
+    var analysisFor by remember { mutableStateOf<AccountWithSnapshots?>(null) }
     var showPro by remember { mutableStateOf(false) }
 
     val totalReach = accounts.sumOf { it.latest?.followers ?: 0 }
@@ -89,7 +92,12 @@ fun DashboardScreen(vm: AppViewModel) {
                 }
             } else {
                 items(accounts, key = { it.account.id }) { acc ->
-                    AccountCard(acc, onClick = { updateFor = acc }, onSetGoal = { goalFor = acc })
+                    AccountCard(
+                        acc, onClick = { updateFor = acc }, onSetGoal = { goalFor = acc },
+                        onAnalyze = if (FollowerAnalysisService.isSupported(acc.account.platform)) {
+                            { analysisFor = acc }
+                        } else null
+                    )
                 }
             }
             item { Spacer(Modifier.height(80.dp)) }
@@ -110,11 +118,14 @@ fun DashboardScreen(vm: AppViewModel) {
             vm.setGoal(acc.account.id, goal); goalFor = null
         }
     }
+    analysisFor?.let { acc ->
+        FollowerAnalysisDialog(acc, onDismiss = { analysisFor = null })
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun AccountCard(acc: AccountWithSnapshots, onClick: () -> Unit, onSetGoal: () -> Unit) {
+private fun AccountCard(acc: AccountWithSnapshots, onClick: () -> Unit, onSetGoal: () -> Unit, onAnalyze: (() -> Unit)? = null) {
     GlassCard(modifier = Modifier.combinedClickable(onClick = onClick, onLongClick = onSetGoal)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             PlatformBadge(acc.account.platform, 40)
@@ -126,6 +137,16 @@ private fun AccountCard(acc: AccountWithSnapshots, onClick: () -> Unit, onSetGoa
             Column(horizontalAlignment = Alignment.End) {
                 Text(NumberFormat.getInstance().format(acc.currentFollowers), fontWeight = FontWeight.Bold, fontSize = 18.sp)
                 Text(stringResource(R.string.followers_lower), fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+            }
+        }
+
+        // Takip Analizi (Bluesky) — geri takip etmeyenler
+        if (onAnalyze != null) {
+            Spacer(Modifier.height(6.dp))
+            TextButton(onClick = onAnalyze, contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp)) {
+                Icon(Icons.Filled.PeopleAlt, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
+                Spacer(Modifier.width(6.dp))
+                Text("Takip Analizi", fontSize = 13.sp, color = MaterialTheme.colorScheme.primary)
             }
         }
 
