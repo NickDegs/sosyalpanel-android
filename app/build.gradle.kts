@@ -17,7 +17,7 @@ android {
         targetSdk = 35
         // Play'deki Flutter build versionCode 51309 → native devralır, üstüne çıkar.
         versionCode = (System.getenv("BUILD_NUMBER") ?: "51310").toInt()
-        versionName = "1.1.0"
+        versionName = "1.2.0"
         vectorDrawables { useSupportLibrary = true }
         // Tüm dilleri pakete dahil et (resource shrink dışı bırakmasın)
         resourceConfigurations += listOf(

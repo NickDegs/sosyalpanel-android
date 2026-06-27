@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.PeopleAlt
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.UploadFile
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -43,6 +44,7 @@ fun DashboardScreen(vm: AppViewModel) {
     var updateFor by remember { mutableStateOf<AccountWithSnapshots?>(null) }
     var goalFor by remember { mutableStateOf<AccountWithSnapshots?>(null) }
     var analysisFor by remember { mutableStateOf<AccountWithSnapshots?>(null) }
+    var importFor by remember { mutableStateOf<AccountWithSnapshots?>(null) }
     var showPro by remember { mutableStateOf(false) }
 
     val totalReach = accounts.sumOf { it.latest?.followers ?: 0 }
@@ -96,6 +98,9 @@ fun DashboardScreen(vm: AppViewModel) {
                         acc, onClick = { updateFor = acc }, onSetGoal = { goalFor = acc },
                         onAnalyze = if (FollowerAnalysisService.isSupported(acc.account.platform)) {
                             { analysisFor = acc }
+                        } else null,
+                        onImport = if (acc.account.platform == Platform.INSTAGRAM || acc.account.platform == Platform.TIKTOK) {
+                            { importFor = acc }
                         } else null
                     )
                 }
@@ -121,11 +126,14 @@ fun DashboardScreen(vm: AppViewModel) {
     analysisFor?.let { acc ->
         FollowerAnalysisDialog(acc, onDismiss = { analysisFor = null })
     }
+    importFor?.let { acc ->
+        DataImportDialog(acc, onDismiss = { importFor = null })
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun AccountCard(acc: AccountWithSnapshots, onClick: () -> Unit, onSetGoal: () -> Unit, onAnalyze: (() -> Unit)? = null) {
+private fun AccountCard(acc: AccountWithSnapshots, onClick: () -> Unit, onSetGoal: () -> Unit, onAnalyze: (() -> Unit)? = null, onImport: (() -> Unit)? = null) {
     GlassCard(modifier = Modifier.combinedClickable(onClick = onClick, onLongClick = onSetGoal)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             PlatformBadge(acc.account.platform, 40)
@@ -140,13 +148,23 @@ private fun AccountCard(acc: AccountWithSnapshots, onClick: () -> Unit, onSetGoa
             }
         }
 
-        // Takip Analizi (Bluesky) — geri takip etmeyenler
+        // Takip Analizi (Bluesky canlı) — geri takip etmeyenler
         if (onAnalyze != null) {
             Spacer(Modifier.height(6.dp))
             TextButton(onClick = onAnalyze, contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp)) {
                 Icon(Icons.Filled.PeopleAlt, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
                 Spacer(Modifier.width(6.dp))
                 Text("Takip Analizi", fontSize = 13.sp, color = MaterialTheme.colorScheme.primary)
+            }
+        }
+
+        // Veri İçe Aktar (Instagram/TikTok) — resmi veri dosyasından geri takip etmeyenler
+        if (onImport != null) {
+            Spacer(Modifier.height(2.dp))
+            TextButton(onClick = onImport, contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp)) {
+                Icon(Icons.Filled.UploadFile, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
+                Spacer(Modifier.width(6.dp))
+                Text("Veri İçe Aktar · Takip Analizi", fontSize = 13.sp, color = MaterialTheme.colorScheme.primary)
             }
         }
 
