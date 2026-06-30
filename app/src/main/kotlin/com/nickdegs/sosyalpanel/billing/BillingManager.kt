@@ -25,8 +25,12 @@ class BillingManager(context: Context) : PurchasesUpdatedListener {
 
     init {
         LicenseService.init(context)
-        scope.launch { LicenseService.loadConfig(); recompute() }
+        LicenseService.onChange = { recompute() }
+        scope.launch { LicenseService.loadConfig(); LicenseService.refreshEntitlement(); recompute() }
     }
+
+    // Giriş sonrası comp/manuel premium'u tazele (AppViewModel çağırır).
+    fun refreshLicense() = scope.launch { LicenseService.refreshEntitlement() }
 
     // Etkin Pro = sunucu-otoriteli gate (STRICT modda sunucu+giriş+online şart).
     private fun recompute() {

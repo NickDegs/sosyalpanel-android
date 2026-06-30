@@ -36,6 +36,10 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             if (AuthService.isLoggedIn.value) runCatching { CloudSyncService.restore(repo) }
         }
+        // Giriş yapılınca comp/manuel premium'u tazele.
+        viewModelScope.launch {
+            AuthService.isLoggedIn.collect { if (it) billing.refreshLicense() }
+        }
         // Hesap değişimlerini buluta gönder (numaraya bağlı senkron).
         viewModelScope.launch {
             accounts.collect { list ->

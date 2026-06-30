@@ -26,15 +26,46 @@ object LicenseService {
 
     @Volatile var strict = false; private set
     @Volatile private var serverPro = false
+    @Volatile private var comped = false           // manuel premium (comp) — satın alma gerekmez
     @Volatile private var expMillis = 0L
     @Volatile private var lastVerified = 0L
     private const val GRACE_MS = 3L * 86_400_000   // online doğrulama arası tolerans
+    @Volatile var onChange: (() -> Unit)? = null   // Pro değişince UI'yi tazele
 
     fun init(ctx: Context) {
         appContext = ctx.applicationContext
         val p = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         expMillis = p.getLong("exp", 0); lastVerified = p.getLong("verified", 0)
+        comped = p.getBoolean("comped", false) && expMillis > System.currentTimeMillis()
         serverPro = expMillis > System.currentTimeMillis()
+    }
+
+    // Satın alma olmadan Pro (comp/manuel premium) — giriş yapılmışsa.
+    suspend fun refreshEntitlement() = withContext(Dispatchers.IO) {
+        val token = AuthService.token ?: return@withContext
+        runCatching {
+            val c = URL("${Backend.LICENSE_BASE}/entitlement").openConnection() as HttpURLConnection
+            c.connectTimeout = 15000; c.readTimeout = 15000
+            c.setRequestProperty("Authorization", "Bearer $token")
+            if (c.responseCode == 200) {
+                val j = JSONObject(c.inputStream.bufferedReader().use { it.readText() })
+                val isComp = j.optBoolean("comp", false)
+                comped = isComp
+                val p = appContext?.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                if (isComp) {
+                    serverPro = true
+                    expMillis = j.optLong("exp", 0) * 1000L
+                    lastVerified = System.currentTimeMillis()
+                    p?.edit()?.putBoolean("comped", true)?.putLong("exp", expMillis)
+                        ?.putLong("verified", lastVerified)?.apply()
+                } else {
+                    p?.edit()?.putBoolean("comped", false)?.apply()
+                }
+            }
+            c.disconnect()
+        }
+        onChange?.invoke()
+        Unit
     }
 
     suspend fun loadConfig() = withContext(Dispatchers.IO) {
@@ -98,6 +129,7 @@ object LicenseService {
     // Etkin Pro kararı. STRICT değilse lokal davranış korunur (gözlem modu).
     // STRICT'te: lokal entitlement + geçerli SUNUCU onayı şart (giriş zorunlu değil — guest-dostu).
     fun effectivePro(local: Boolean, loggedIn: Boolean = false): Boolean {
+        if (comped) return true              // manuel premium — koşulsuz Pro
         if (!strict) return local
         if (!local) return false
         val now = System.currentTimeMillis()
