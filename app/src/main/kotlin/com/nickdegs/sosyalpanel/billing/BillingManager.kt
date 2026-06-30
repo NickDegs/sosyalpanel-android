@@ -3,8 +3,13 @@ package com.nickdegs.sosyalpanel.billing
 import android.app.Activity
 import android.content.Context
 import com.android.billingclient.api.*
+import com.nickdegs.sosyalpanel.data.AuthService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 // iOS StoreManager (StoreKit 2) karşılığı — Google Play Billing 7.
 // Abonelik ürünleri Play Console'da oluşturulur:
@@ -14,6 +19,19 @@ class BillingManager(context: Context) : PurchasesUpdatedListener {
 
     private val _isPro = MutableStateFlow(false)
     val isPro: StateFlow<Boolean> = _isPro
+
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    @Volatile private var localActive = false   // lokal Play entitlement (cache)
+
+    init {
+        LicenseService.init(context)
+        scope.launch { LicenseService.loadConfig(); recompute() }
+    }
+
+    // Etkin Pro = sunucu-otoriteli gate (STRICT modda sunucu+giriş+online şart).
+    private fun recompute() {
+        _isPro.value = LicenseService.effectivePro(localActive, AuthService.isLoggedIn.value)
+    }
 
     private val _products = MutableStateFlow<List<ProductDetails>>(emptyList())
     val products: StateFlow<List<ProductDetails>> = _products
@@ -57,9 +75,15 @@ class BillingManager(context: Context) : PurchasesUpdatedListener {
             QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build()
         ) { result, purchases ->
             if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-                val active = purchases.any { it.purchaseState == Purchase.PurchaseState.PURCHASED }
-                _isPro.value = active
+                val activePurchase = purchases.firstOrNull { it.purchaseState == Purchase.PurchaseState.PURCHASED }
+                localActive = activePurchase != null
+                recompute()
                 purchases.forEach { acknowledge(it) }
+                // Sunucu-otoriteli doğrulama (Play Integrity + Google makbuz).
+                activePurchase?.let { p ->
+                    val pid = p.products.firstOrNull() ?: ""
+                    scope.launch { LicenseService.verify(pid, p.purchaseToken); recompute() }
+                }
             }
         }
     }
@@ -90,6 +114,9 @@ class BillingManager(context: Context) : PurchasesUpdatedListener {
                 AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.purchaseToken).build()
             ) {}
         }
-        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) _isPro.value = true
+        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+            localActive = true
+            recompute()
+        }
     }
 }

@@ -17,7 +17,7 @@ android {
         targetSdk = 35
         // Play'deki Flutter build versionCode 51309 → native devralır, üstüne çıkar.
         versionCode = (System.getenv("BUILD_NUMBER") ?: "51310").toInt()
-        versionName = "1.2.0"
+        versionName = "1.3.0"
         vectorDrawables { useSupportLibrary = true }
         // Tüm dilleri pakete dahil et (resource shrink dışı bırakmasın)
         resourceConfigurations += listOf(
@@ -93,6 +93,8 @@ dependencies {
 
     // Google Play Billing (Pro abonelik — StoreKit karşılığı)
     implementation("com.android.billingclient:billing-ktx:7.1.1")
+    // Play Integrity — modlanmış APK / emülatör / crack tespiti (sunucu doğrular)
+    implementation("com.google.android.play:integrity:1.4.0")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.compose.ui:ui-tooling-preview")
