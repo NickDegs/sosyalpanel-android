@@ -50,15 +50,16 @@ object LicenseService {
         Unit
     }
 
+    // Giriş ZORUNLU değil: token varsa uid'ye bağlanır, yoksa makbuza/Integrity'ye (guest-dostu).
     suspend fun verify(productId: String, purchaseToken: String) = withContext(Dispatchers.IO) {
-        val token = AuthService.token ?: return@withContext
+        val token = AuthService.token
         val integrity = runCatching { integrityToken() }.getOrNull()
         runCatching {
             val c = URL("${Backend.LICENSE_BASE}/license/verify").openConnection() as HttpURLConnection
             c.requestMethod = "POST"; c.doOutput = true
             c.connectTimeout = 15000; c.readTimeout = 15000
             c.setRequestProperty("Content-Type", "application/json")
-            c.setRequestProperty("Authorization", "Bearer $token")
+            if (token != null) c.setRequestProperty("Authorization", "Bearer $token")
             val body = JSONObject()
                 .put("platform", "android").put("productId", productId)
                 .put("purchaseToken", purchaseToken)
@@ -95,9 +96,10 @@ object LicenseService {
     }
 
     // Etkin Pro kararı. STRICT değilse lokal davranış korunur (gözlem modu).
-    fun effectivePro(local: Boolean, loggedIn: Boolean): Boolean {
+    // STRICT'te: lokal entitlement + geçerli SUNUCU onayı şart (giriş zorunlu değil — guest-dostu).
+    fun effectivePro(local: Boolean, loggedIn: Boolean = false): Boolean {
         if (!strict) return local
-        if (!local || !loggedIn) return false
+        if (!local) return false
         val now = System.currentTimeMillis()
         if (expMillis > now) return serverPro
         if (now - lastVerified < GRACE_MS) return serverPro
